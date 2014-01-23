@@ -1,0 +1,71 @@
+<html>
+<head>
+<style type="text/css">
+h1,h2,h3,h4,h5,h6,h7 {
+margin:0;
+padding:0;
+}
+h1 {
+margin-top: 8px;
+}
+</style>
+</head>
+<body style='font-family: "Ubuntu Mono";'>
+<h2>Compile time Thursday, 23.01.2014, 23:35:11, YEKT</h2><h1>fib.c</h1>
+<h2>Compiling:</h2>
+<b>Exit code:</b> 0<br>
+<b>Messages:</b><br>
+test_source_fib.c:&nbsp;In&nbsp;function&nbsp;‘main’:<br>
+test_source_fib.c:76:3:&nbsp;warning:&nbsp;passing&nbsp;argument&nbsp;1&nbsp;of&nbsp;‘fact2’&nbsp;makes&nbsp;integer&nbsp;from&nbsp;pointer&nbsp;without&nbsp;a&nbsp;cast&nbsp;[enabled&nbsp;by&nbsp;default]<br>
+&nbsp;&nbsp;&nbsp;t5&nbsp;=&nbsp;fact2("1338");<br>
+&nbsp;&nbsp;&nbsp;^<br>
+test_source_fib.c:11:9:&nbsp;note:&nbsp;expected&nbsp;‘int64_t’&nbsp;but&nbsp;argument&nbsp;is&nbsp;of&nbsp;type&nbsp;‘char&nbsp;*’<br>
+&nbsp;int64_t&nbsp;fact2(int64_t&nbsp;n)&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^<br>
+test_source_fib.c:76:6:&nbsp;warning:&nbsp;assignment&nbsp;makes&nbsp;pointer&nbsp;from&nbsp;integer&nbsp;without&nbsp;a&nbsp;cast&nbsp;[enabled&nbsp;by&nbsp;default]<br>
+&nbsp;&nbsp;&nbsp;t5&nbsp;=&nbsp;fact2("1338");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^<br>
+
+<h2>Tests:</h2>
+<b>Exit code:</b> -11<br>
+<h3>Test #0</h3><b>Status:</b> <font style='color:green'>Passed</font><br>
+<b>Type:</b> IS_EQ_D<br>
+<b>fact</b>(3) = 6, wait: 6<br>
+<h3>Test #1</h3><b>Status:</b> <font style='color:red'>Wrong</font><br>
+<b>Type:</b> IS_EQ_D<br>
+<b>fact</b>(14) = 1278945280, wait: 87178291200<br>
+<h3>Test #2</h3><b>Status:</b> <font style='color:green'>Passed</font><br>
+<b>Type:</b> IS_NOT_EQ_D<br>
+<b>fact</b>(1) = 1, wait: 0<br>
+<h3>Test #3</h3><b>Status:</b> <font style='color:green'>Passed</font><br>
+<b>Type:</b> IS_NOT_EQ_D<br>
+<b>fact2</b>(1) = 1, wait: 0<br>
+<h3>Test #4</h3><b>Status:</b> <font style='color:green'>Passed</font><br>
+<b>Type:</b> IS_EQ_D<br>
+<b>fact2</b>(14) = 87178291200, wait: 87178291200<br>
+<h3>Test #5</h3><b>Status:</b> <font style='color:red'>Program terminate</font><br>
+<b>Type:</b> IS_EQ_S<br>
+<b>fact2</b>("1338") = Ø, wait: "FUCK"<br>
+<font style='color:red'>Program terminate with exit code -11</font><br>
+<h3>Test #6</h3><b>Status:</b> <font style='color:yellow'>Unknown</font><br>
+<b>Type:</b> IS_EQ_D<br>
+<b>fact2</b>(4) = Ø, wait: 24<br>
+<h1>str_test.c</h1>
+<h2>Compiling:</h2>
+<b>Exit code:</b> 0<br>
+<b>Messages:</b><br>
+
+<h2>Tests:</h2>
+<b>Exit code:</b> 0<br>
+<h3>Test #0</h3><b>Status:</b> <font style='color:green'>Passed</font><br>
+<b>Type:</b> IS_EQ_S<br>
+<b>cutStr</b>("Hello",2) = eH, wait: "eH"<br>
+<h3>Test #1</h3><b>Status:</b> <font style='color:red'>Wrong</font><br>
+<b>Type:</b> IS_EQ_S<br>
+<b>cutStr</b>("Fucking Fuck",5) = ikcuF, wait: "ickuF"<br>
+<h3>Test #2</h3><b>Status:</b> <font style='color:green'>Passed</font><br>
+<b>Type:</b> IS_NOT_EQ_S<br>
+<b>cutStr</b>("Privetik",6) = tevirP, wait: "HihiLal"<br>
+
+</body>
+</html>

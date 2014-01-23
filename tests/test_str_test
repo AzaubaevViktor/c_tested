@@ -1,0 +1,10 @@
+cutStr
+    IS_EQ_S
+        "Hello",2
+        "eH"
+    IS_EQ_S
+        "Fucking Fuck",5
+        "ickuF"
+    IS_NOT_EQ_S
+        "Privetik", 6
+        "HihiLal"

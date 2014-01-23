@@ -1,0 +1,23 @@
+fact
+    IS_EQ_D
+        3
+        6
+    IS_EQ_D
+        14
+        87178291200
+    IS_NOT_EQ_D
+        1
+        0
+fact2
+    IS_NOT_EQ_D
+        1
+        0
+    IS_EQ_D
+        14
+        87178291200
+    IS_EQ_S
+        "1338"
+        "FUCK"
+    IS_EQ_D
+        4
+        24
