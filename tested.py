@@ -45,7 +45,7 @@ def get_tests(file):
         print(ERROR + "Test file for '%s' not found , terminate" % file['name'])
         return None
 
-    tests = []
+    _tests = []
 
     line = f.readline().rstrip().lstrip()
     while '' != line:
@@ -60,11 +60,11 @@ def get_tests(file):
                 line = f.readline().rstrip().lstrip()
             test['type'] = test_types_str[test['type']]
             test['variables'] = [t.rstrip().lstrip() for t in test['variables'].split(',')]
-            tests.append(test)
+            _tests.append(test)
 
     f.close()
 
-    return tests
+    return _tests
 
 
 def _get_file_name(fullname):
@@ -193,7 +193,7 @@ for filename in file_names:
 
     tests = get_tests(file)
     if None != tests:
-        code = generator(conf, file, tests)
+        code = generator_test_code(conf, file, tests)
 
         info = TestInfo()
 
