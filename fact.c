@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <inttypes.h>
 
 int64_t fact(int64_t n) {
     int result = 1, i = 1;

@@ -28,9 +28,14 @@ def generator(conf, file, tests):
         _code, variable = test['type'](test, num)
         code = variable + code + _code
         num += 1
-    code += "\n  close(f);\n  return 0;\n}"
+    code += "\n  fclose(f);\n  return 0;\n}"
 
-    code = "\n\n#include <stdio.h>\n#include <inttypes.h>\n#include <string.h>\n\nint main(void) {\n" + code
+    code = """\n\n#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include <inttypes.h>
+#include <string.h>\n
+int main(void) {\n""" + code
 
     return code
 
