@@ -22,7 +22,7 @@ def _get_status(st):
     elif 4 == st:
         return "<font style='color:red'>Program terminate</font>"
 
-def processing_info_to_html(test_results):
+def processing_info_to_html(test_results, conf):
     html = """<html>
 <head>
 <style type="text/css">
@@ -37,14 +37,23 @@ margin-top: 8px;
 </head>
 <body style='font-family: "Ubuntu Mono";'>
 """
-    html += "<h2>Compile time %s</h2>" % strftime("%A, %d.%m.%Y, %H:%M:%S, %Z")
+    html += "<h2>Compile time %s; project \"%s\"</h2>" % (strftime("%A, %d.%m.%Y, %H:%M:%S, %Z"), conf['folder'])
+
     for file_name, result in sorted(test_results.items()):
-        html += "<h1>%s</h1>\n" % file_name + \
+
+        n_passed_tests = 0
+        for t_result in result.tests_result:
+            n_passed_tests += TEST_PASSED == t_result[0]
+
+        n_all_tests = len(result.tests)
+
+        html += "<h1>%s (<font style='color:green'>%d</font>/%d)</h1>\n" % (file_name, n_passed_tests, n_all_tests) + \
                 "<h2>Compiling:</h2>\n" + \
                 "<b>Exit code:</b> %d<br>\n" % result.compile_exit_code + \
                 "<b>Messages:</b><br>\n%s\n" % result.compile_message.replace(" ","&nbsp;") + \
                 "<h2>Tests:</h2>\n" + \
                 "<b>Exit code:</b> %d<br>\n" % result.program_exit_code
+
         n_tests = 0
         for test in result.tests:
             func_name = test['func']

@@ -22,7 +22,7 @@ def generator_test_code(conf, file, tests):
     code = """
   FILE *f = fopen("%s","wt");
   if (NULL == f)
-    return 1488;\n""" % (conf["test_result_file_prefix"] + file['name'])
+    return 1488;\n""" % ("./"+conf["test_result_file_prefix"] + file['name'])
 
     num = 0
     libs_list = []

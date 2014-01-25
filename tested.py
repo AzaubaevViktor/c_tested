@@ -11,14 +11,20 @@ conf = {"compiler": "gcc",
         "compiler_flags": "",
         "out_file": "results.html",
         "test_file_prefix": "test_",
-        "c_file_prefix": "test_source_",
-        "exec_file_prefix": "test_exec_",
-        "test_result_file_prefix": "test_result_"}
+        "c_file_prefix": "t_source_",
+        "exec_file_prefix": "t_exec_",
+        "test_result_file_prefix": "t_result_"}
+
+prg_version = "0.1.1b NOT TESTED"
 
 
-def config():
+def config(folder):
+    if ("/" != folder[0]) and ("./" != folder[:2]):
+        folder = "./" + folder
+    if "/" != folder[-1]:
+        folder += "/"
     try:
-        f = open("tests/tested.conf", "rt")
+        f = open(folder + "tests/tested.conf", "rt")
     except FileNotFoundError:
         print(SYSTEM + "Config file not found. Used default config.")
     else:
@@ -31,13 +37,14 @@ def config():
         f.close()
     conf['compiler_flags'] = [flag.rstrip().lstrip() for flag in conf['compiler_flags'].split(" ")]
     conf['compiler_flags'] = [flag for flag in conf['compiler_flags'] if '' != flag]
+    conf['folder'] = folder
 
 from lib_tested import *
 test_types_str = {str(test_type):test_type for test_type in test_types}
 
 
 def get_tests(file):
-    test_file = "tests/" + conf["test_file_prefix"] + file['name']
+    test_file = conf['folder'] + "tests/" + conf["test_file_prefix"] + file['name']
     try:
         f = open(test_file)
     except FileNotFoundError:
@@ -67,7 +74,8 @@ def get_tests(file):
 
 
 def _get_file_name(fullname):
-    name = fullname.split(".")
+    name_ex = fullname.split("/")[-1]
+    name = name_ex.split(".")
     if len(name) > 1:
         return ".".join(name[:-1])
     return name[0]
@@ -125,7 +133,7 @@ def compile_test(info, conf, file):
 
 def execute_test(info, file):
     print(INFO + "Exec the tests...")
-    if not os.path.exists("./" + file['exec']):
+    if not os.path.exists(file['exec']):
         print(ERROR + "Execute file '%s' not found. Terminate." % file['exec'])
         return -1
 
@@ -151,7 +159,6 @@ def combine_results(info, file, tests):
 
     print(INFO + "Processing results...")
     for line in f.readlines():
-        st = -1
         if "OK" == line[:2]:
             st = TEST_PASSED
         elif "WR" == line[:2]:
@@ -174,21 +181,23 @@ import glob
 import subprocess
 import os
 from lib_to_html import *
+import argparse
 
-# TODO: Протестировать на реальном проекте
-# TODO: Добавить ещё проверок!
+parser = argparse.ArgumentParser(add_help=True, description="Utility for testing C-code v%s" % prg_version )
+parser.add_argument('-f', '--folder', action='store', default='./', help="Project location for tests")
+args = parser.parse_args()
 
-config()
+config(args.folder)
 
 test_results = {}
 
-file_names = glob.glob("*.c")
+file_names = glob.glob(conf['folder'] + "*.c")
 
 for filename in file_names:
     print(INFO + "Testing '%s'" % filename)
     file = {'source': filename,
+            'folder': conf['folder'],
             'name': _get_file_name(filename)}
-
     file['.c'] = conf['c_file_prefix'] + file['name'] + ".c"
     file['exec'] = conf['exec_file_prefix'] + file['name']
     file['result_tests'] = conf["test_result_file_prefix"] + file['name']
@@ -214,7 +223,7 @@ for filename in file_names:
 
 print(INFO + "Processing info into '%s'" % conf['out_file'])
 
-html = processing_info_to_html(test_results)
+html = processing_info_to_html(test_results, conf)
 
 open(conf['out_file'],"wt").write(html)
 print(INFO + "Program end. Bye!")
