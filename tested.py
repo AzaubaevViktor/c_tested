@@ -7,8 +7,7 @@ SYSTEM =        "\x1b[34m[--SYSTEM--] \x1b[0m"
 INFO =          "[---INFO---] "
 WARNING =       "\x1b[33m[--WARNING-] \x1b[0m"
 
-conf = {"tests_directory": "./tests/",
-        "compiler": "gcc",
+conf = {"compiler": "gcc",
         "compiler_flags": "",
         "out_file": "results.html",
         "test_file_prefix": "test_",
@@ -19,7 +18,7 @@ conf = {"tests_directory": "./tests/",
 
 def config():
     try:
-        f = open("tested.conf", "rt")
+        f = open("tests/tested.conf", "rt")
     except FileNotFoundError:
         print(SYSTEM + "Config file not found. Used default config.")
     else:
@@ -38,7 +37,7 @@ test_types_str = {str(test_type):test_type for test_type in test_types}
 
 
 def get_tests(file):
-    test_file = conf["tests_directory"] + conf["test_file_prefix"] + file['name']
+    test_file = "tests/" + conf["test_file_prefix"] + file['name']
     try:
         f = open(test_file)
     except FileNotFoundError:
@@ -175,6 +174,9 @@ import glob
 import subprocess
 import os
 from lib_to_html import *
+
+# TODO: Протестировать на реальном проекте
+# TODO: Добавить ещё проверок!
 
 config()
 
