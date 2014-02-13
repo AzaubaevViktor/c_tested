@@ -104,136 +104,103 @@ def parse_file(conf, file):
 
 
 class Test():
-    def __init__(self, string, libs, get_vars, get_test, get_out):
+    def __init__(self, string, libs):
         self.string = string
         self.libs = "\n".join(["#include <" + lib + ">" for lib in libs])
-        self._get_vars = get_vars
-        self._get_test = get_test
-        self._get_out = get_out
 
     def __str__(self):
         return self.string
 
-    def get_vars(self, t_index):
-        return self._get_vars(self, t_index)
+    def get_vars(self, t_index, var_index):
+        pass
 
     def get_test(self, output):
-        return self._get_test(self, output)
+        pass
 
     def get_out(self):
-        return self._get_out(self)
+        pass
 
 test_types = {}
 
+# ================ IS_[NOT_]_EQ_[U]INT[Ø,8,16,32,64] =================
 
-# ================== IS_EQ_INT ==================
-def _get_vars(self, t_index):
-    self.var = "tFuncOut%d" % t_index
-    return "int %s;" % self.var, t_index + 1
+class TestInt(Test):
+    def __init__(self, string, libs, _int_type, _compare, _print_int_type):
+        Test.__init__(self, string, libs)
+        self.int_type = _int_type
+        self.compare = _compare
+        self.print_int_type = _print_int_type
 
+    def get_vars(self, t_index, var_index):
+        self.var = "tFuncOutT%dV%d" % (t_index, var_index)
+        return "%s %s;" % (self.int_type, self.var), var_index + 1
 
-def _get_test(self, output):
-    return "(%s == %s)" % (output, self.var)
+    def get_test(self, output):
+        return "(%s %s %s)" % (output, self.compare, self.var)
 
-
-def _get_out(self):
-    return '"%%d\\n", %s' % self.var
-
-
-IS_EQ_INT = Test("IS_EQ_INT", ["inttypes.h", "stdlib.h"], _get_vars, _get_test, _get_out)
-test_types[str(IS_EQ_INT)] = IS_EQ_INT
-# ===============================================
-
-# ================== IS_NOT_EQ_INT ==================
-def _get_vars(self, t_index):
-    self.var = "tFuncOut%d" % t_index
-    return "int %s;" % self.var, t_index + 1
+    def get_out(self):
+        return '"%%%s\\n", %s' % (self.print_int_type, self.var)
 
 
-def _get_test(self, output):
-    return "(%s != %s)" % (output, self.var)
+for int_bits in ["", "8", "16", "32", "64"]:
+    for is_unsigned in [0, 1]:
+        for is_not_eq in [0, 1]:
+            int_type = "int"
+
+            int_type += (int_bits + "_t") if (int_bits != "") else ""
+
+            int_type = ("unsigned " if ("" == int_bits) else "u") + int_type
+
+            comp = "!=" if is_not_eq else "=="
+
+            print_int_type = "u" if is_unsigned else "d"
+
+            if int_bits != "":
+                print_int_type = "\" PRI" + print_int_type + int_bits + " \""
+
+            _is_eq_int = TestInt("IS_%sEQ_%sINT%s" % (
+                "NOT_" if is_not_eq else "",
+                "U" if is_unsigned else "", int_bits),
+                ["inttypes.h", "stdlib.h"],
+                int_type,
+                comp,
+                print_int_type)
+            test_types[str(_is_eq_int)] = _is_eq_int
+
+            print_int_type = None
+            _is_eq_int = None
+            int_type = None
+
+int_bits = None
+is_unsigned = None
+is_not_eq = None
 
 
-def _get_out(self):
-    return '"%%d\\n", %s' % self.var
+# ============== IS_[NOT_]_EQ_STR ================
+class TestStr(Test):
+    def __init__(self, string, libs, compare):
+        Test.__init__(self, string, libs)
+        self.compare = compare
+
+    def get_vars(self, t_index, var_index):
+        self.var = "tFuncOutT%dV%d" % (t_index, var_index)
+        return "char *%s;" % self.var, var_index + 1
+
+    def get_test(self, output):
+        return "(0 %s strcmp(%s, %s))" % (self.compare, output, self.var)
+
+    def get_out(self):
+        return '"%%s\\n", %s' % self.var
 
 
-IS_NOT_EQ_INT = Test("IS_NOT_EQ_INT", ["inttypes.h", "stdlib.h"], _get_vars, _get_test, _get_out)
-test_types[str(IS_NOT_EQ_INT)] = IS_NOT_EQ_INT
-# ===============================================
+for is_not_eq in [0,1]:
+    _is_eq_int = TestStr("IS_%sEQ_STR" % ("NOT_" if is_not_eq else ""),
+                         ["string.h"],
+                         "!=" if is_not_eq else "==")
+    test_types[str(_is_eq_int)] = _is_eq_int
+    _is_eq_int = None
 
-# ================== IS_EQ_LONG_INT ==================
-def _get_vars(self, t_index):
-    self.var = "tFuncOut%d" % t_index
-    return "long int %s;" % self.var, t_index + 1
-
-
-def _get_test(self, output):
-    return "(%s == %s)" % (output, self.var)
-
-
-def _get_out(self):
-    return '"%%d\\n", %s' % self.var
-
-
-IS_EQ_LONG_INT = Test("IS_EQ_LONG_INT", ["inttypes.h", "stdlib.h"], _get_vars, _get_test, _get_out)
-test_types[str(IS_EQ_LONG_INT)] = IS_EQ_LONG_INT
-# ===============================================
-
-# ================== IS_EQ_INT64 ==================
-def _get_vars(self, t_index):
-    self.var = "tFuncOut%d" % t_index
-    return "int64_t %s;" % self.var, t_index + 1
-
-
-def _get_test(self, output):
-    return "(%s == %s)" % (output, self.var)
-
-
-def _get_out(self):
-    return '"%%\"PRId64\"\\n", %s' % self.var
-
-
-IS_EQ_INT64 = Test("IS_EQ_INT64", ["inttypes.h", "stdlib.h"], _get_vars, _get_test, _get_out)
-test_types[str(IS_EQ_INT64)] = IS_EQ_INT64
-# ===============================================
-
-# ================== IS_EQ_STR ==================
-def _get_vars(self, t_index):
-    self.var = "tFuncOut%d" % t_index
-    return "char *%s;" % self.var, t_index + 1
-
-
-def _get_test(self, output):
-    return "(0 == strcmp(%s, %s))" % (output, self.var)
-
-
-def _get_out(self):
-    return '"%%s\\n", %s' % self.var
-
-
-IS_EQ_STR = Test("IS_EQ_STR", ["string.h"], _get_vars, _get_test, _get_out)
-test_types[str(IS_EQ_STR)] = IS_EQ_STR
-# ===============================================
-
-# ================== IS_NOT_EQ_STR ==================
-def _get_vars(self, t_index):
-    self.var = "tFuncOut%d" % t_index
-    return "char *%s;" % self.var, t_index + 1
-
-
-def _get_test(self, output):
-    return "(0 != strcmp(%s, %s))" % (output, self.var)
-
-
-def _get_out(self):
-    return '"%%s\\n", %s' % self.var
-
-
-IS_NOT_EQ_STR = Test("IS_NOT_EQ_STR", ["string.h"], _get_vars, _get_test, _get_out)
-test_types[str(IS_NOT_EQ_STR)] = IS_NOT_EQ_STR
-# ===============================================
-
+is_not_eq = None
 
 
 def generate_test_code(conf, file, tests, includes):
@@ -245,13 +212,16 @@ def generate_test_code(conf, file, tests, includes):
     variables = ""
 
     t_index = 0
+    var_index = 0
 
     for test in tests:
         t_type = test_types.get(test['type'], None)
         if None is t_type:
             continue
 
-        _var_init, t_index = t_type.get_vars(t_index)
+        var_index = 0
+
+        _var_init, var_index = t_type.get_vars(t_index, var_index)
         var_name = t_type.var
 
         variables += "  " + test['variables'].rstrip().lstrip().lstrip() + "\n"
@@ -271,14 +241,17 @@ def generate_test_code(conf, file, tests, includes):
        t_type.get_test(test['output']),
        t_type.get_out())
 
+        t_index += 1
+
     includes.append("stdio.h")
 
     return "\n\n/* === TESTED === */\n" +\
            "\n".join(["#include <" + lib + ">" for lib in includes]) +\
            "\n\nint main(void) {\n" +\
+           "/* Variables */" + \
            variables +\
+           "/* Tests */" + \
            code +\
            "\n  fclose(f);\n  return 0;\n}"
-
 
 

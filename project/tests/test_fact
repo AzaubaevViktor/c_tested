@@ -8,13 +8,19 @@
         <out>6</out>
       </test>
 
+      <test type="IS_EQ_UINT" func="fact">
+        <variables></variables>
+        <inp>3</inp>
+        <out>6</out>
+      </test>
+
       <test type="IS_EQ_INT" func="fact">
         <variables></variables>
         <inp>14</inp>
         <out>87178291200</out>
       </test>
 
-      <test type="IS_NOT_EQ_INT" func="fact">
+      <test type="IS_NOT_EQ_UINT" func="fact">
         <inp>1</inp>
         <out>0</out>
       </test>
