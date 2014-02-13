@@ -1,23 +1,59 @@
-fact
-    IS_EQ_D
-        3
-        6
-    IS_EQ_D
-        14
-        87178291200
-    IS_NOT_EQ_D
-        1
-        0
-fact2
-    IS_NOT_EQ_D
-        1
-        0
-    IS_EQ_D
-        14
-        87178291200
-    IS_EQ_S
-        "1338"
-        "FUCK"
-    IS_EQ_D
-        4
-        24
+<document>
+    <libraries>stdint.h, inttypes.h</libraries>
+
+    <tests>
+      <test type="IS_EQ_INT">
+        <variables></variables>
+        <inp>3</inp>
+        <out>6</out>
+      </test>
+
+      <test type="IS_EQ_INT" func="fact">
+        <variables></variables>
+        <inp>14</inp>
+        <out>87178291200</out>
+      </test>
+
+      <test type="IS_NOT_EQ_INT" func="fact">
+        <inp>1</inp>
+        <out>0</out>
+      </test>
+
+      <test type="IS_NOT_EQ_INT" func="fact2">
+        <inp>1</inp>
+        <out>0</out>
+      </test>
+
+      <test type="IS_EQ_INT64" func="fact2">
+        <variables></variables>
+        <inp>14</inp>
+        <out type="int64_t">87178291200</out>
+      </test>
+
+      <test type="IS_EQ_STR" func="fact2">
+        <inp type="char *">FUCK</inp>
+        <out type="char *">1338</out>
+      </test>
+
+      <test type="IS_EQ_INT" func="fact2">
+        <inp type="int">4</inp>
+        <out>24</out>
+      </test>
+
+      <test type="IS_EQ_INT" func="two_arg">
+        <inp type="int16_t">123</inp>
+        <inp type="char *">Lalka</inp>
+        <out type="int32_t">123</out>
+      </test>
+
+      <test type="IS_EQ_INT" func="two_arg">
+        <variables>
+          char s[] = "lalaka";
+        </variables>
+        <inp type="int16_t">222</inp>
+        <inp>s</inp>
+        <out>243</out>
+      </test>
+
+    </tests>
+</document>

@@ -42,7 +42,7 @@ margin-top: 8px;
     for file_name, result in sorted(test_results.items()):
 
         n_passed_tests = 0
-        for t_result in result.tests_result:
+        for t_result in result.tests_results:
             n_passed_tests += TEST_PASSED == t_result[0]
 
         n_all_tests = len(result.tests)
@@ -58,12 +58,12 @@ margin-top: 8px;
         for test in result.tests:
             func_name = test['func']
             test_type = test['type']
-            variables = test['variables']
-            waiting_result = test['result']
+            input = test['input']
+            waiting_result = test['output']
 
             status, output = TEST_UNKNOWN, "Ø"
-            if len(result.tests_result) > n_tests:
-                status, output = result.tests_result[n_tests]
+            if len(result.tests_results) > n_tests:
+                status, output = result.tests_results[n_tests]
 
             if TEST_TERMINATE == status:
                 output = "Ø"
@@ -71,7 +71,7 @@ margin-top: 8px;
             html += "<h3>Test #%d</h3>" % n_tests + \
                     "<b>Status:</b> %s<br>\n" % _get_status(status) + \
                     "<b>Type:</b> %s<br>\n" % test_type + \
-                    "<b>%s</b>(%s) = %s, wait: %s<br>\n" %(func_name, ",".join(variables), output, waiting_result)
+                    "<b>%s</b>(%s) = %s, wait: %s<br>\n" % (func_name, ", ".join(input), output, waiting_result)
 
             if TEST_TERMINATE == status:
                 html += "<font style='color:red'>Program terminate with exit code %d</font><br>\n" % result.program_exit_code

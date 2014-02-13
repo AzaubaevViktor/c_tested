@@ -15,7 +15,7 @@ conf = {"compiler": "gcc",
         "exec_file_prefix": "t_exec_",
         "test_result_file_prefix": "t_result_"}
 
-prg_version = "0.1.1b NOT TESTED"
+prg_version = "0.1.2b NOT TESTED"
 
 
 def config(folder):
@@ -39,39 +39,6 @@ def config(folder):
     conf['compiler_flags'] = [flag for flag in conf['compiler_flags'] if '' != flag]
     conf['folder'] = folder
 
-from lib_tested import *
-test_types_str = {str(test_type):test_type for test_type in test_types}
-
-
-def get_tests(file):
-    test_file = conf['folder'] + "tests/" + conf["test_file_prefix"] + file['name']
-    try:
-        f = open(test_file)
-    except FileNotFoundError:
-        print(ERROR + "Test file for '%s' not found , terminate" % file['name'])
-        return None
-
-    _tests = []
-
-    line = f.readline().rstrip().lstrip()
-    while '' != line:
-        func = line
-        line = f.readline().rstrip().lstrip()
-
-        while line in test_types_str:
-            test = {}
-            test['func'] = func
-            for field in ['type', 'variables', 'result']:
-                test[field] = line
-                line = f.readline().rstrip().lstrip()
-            test['type'] = test_types_str[test['type']]
-            test['variables'] = [t.rstrip().lstrip() for t in test['variables'].split(',')]
-            _tests.append(test)
-
-    f.close()
-
-    return _tests
-
 
 def _get_file_name(fullname):
     name_ex = fullname.split("/")[-1]
@@ -83,14 +50,14 @@ def _get_file_name(fullname):
 
 class TestInfo():
     def __init__(self):
-        self.tests_result = []
+        self.tests_results = []
         self.compile_exit_code = 0
         self.compile_message = b''
         self.program_exit_code = 0
         self.tests = []
 
     def add_test_result(self, type, output=''):
-        self.tests_result.append([type,output])
+        self.tests_results.append([type,output])
 
 
 def combine_test(file, code):
@@ -120,7 +87,7 @@ def compile_test(info, conf, file):
         exit_code = e.returncode
         info.compile_message = e.output
 
-    info.compile_message = info.compile_message.decode(encoding='utf-8', errors='strict').replace("\n","<br>\n")
+    info.compile_message = info.compile_message.decode(encoding='utf-8', errors='strict').replace("\n", "<br>\n")
 
     info.compile_exit_code = exit_code
 
@@ -168,7 +135,7 @@ def combine_results(info, file, tests):
 
         info.add_test_result(st, line[3:].rstrip())
 
-    if len(tests) != len(info.tests_result):
+    if len(tests) != len(info.tests_results):
         info.add_test_result(TEST_TERMINATE, info.program_exit_code)
 
     info.tests = tests
@@ -180,8 +147,11 @@ def combine_results(info, file, tests):
 import glob
 import subprocess
 import os
-from lib_to_html import *
 import argparse
+
+from lib_to_html import *
+from lib_tested import *
+
 
 parser = argparse.ArgumentParser(add_help=True, description="Utility for testing C-code v%s" % prg_version )
 parser.add_argument('-f', '--folder', action='store', default='./', help="Project location for tests")
@@ -202,9 +172,9 @@ for filename in file_names:
     file['exec'] = conf['exec_file_prefix'] + file['name']
     file['result_tests'] = conf["test_result_file_prefix"] + file['name']
 
-    tests = get_tests(file)
+    tests, includes = parse_file(conf, file)
     if None != tests:
-        code = generator_test_code(conf, file, tests)
+        code = generate_test_code(conf, file, tests, includes)
 
         info = TestInfo()
 
