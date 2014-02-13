@@ -51,7 +51,7 @@ def parse_file(conf, file):
 
     xml_libraries = xml_root.find("libraries")
 
-    if None != xml_libraries:
+    if (None != xml_libraries) and (None != xml_libraries.text):
         for lib in xml_libraries.text.split(','):
             includes.append(lib.rstrip().lstrip())
 
@@ -205,7 +205,7 @@ def _get_vars(self, t_index):
 
 
 def _get_test(self, output):
-    return "(%s == %s)" % (output, self.var)
+    return "(0 == strcmp(%s, %s))" % (output, self.var)
 
 
 def _get_out(self):
@@ -214,6 +214,24 @@ def _get_out(self):
 
 IS_EQ_STR = Test("IS_EQ_STR", ["string.h"], _get_vars, _get_test, _get_out)
 test_types[str(IS_EQ_STR)] = IS_EQ_STR
+# ===============================================
+
+# ================== IS_NOT_EQ_STR ==================
+def _get_vars(self, t_index):
+    self.var = "tFuncOut%d" % t_index
+    return "char *%s;" % self.var, t_index + 1
+
+
+def _get_test(self, output):
+    return "(0 != strcmp(%s, %s))" % (output, self.var)
+
+
+def _get_out(self):
+    return '"%%s\\n", %s' % self.var
+
+
+IS_NOT_EQ_STR = Test("IS_NOT_EQ_STR", ["string.h"], _get_vars, _get_test, _get_out)
+test_types[str(IS_NOT_EQ_STR)] = IS_NOT_EQ_STR
 # ===============================================
 
 

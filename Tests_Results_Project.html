@@ -1,18 +1,40 @@
 <html>
-<head>
-<style type="text/css">
-h1,h2,h3,h4,h5,h6,h7 {
-margin:0;
-padding:0;
-}
-h1 {
-margin-top: 8px;
-}
-</style>
-</head>
+    <head>
+        <style type="text/css">
+            h1,h2,h3,h4,h5,h6,h7 {
+                margin:0;
+                padding:0;
+            }
+            h1 {
+                margin-top: 8px;
+                margin-bottom: 8px;
+            }
+            .spoiler {
+                background: #DDD;
+                border: 1px solid #333;
+                height: auto;
+                width: 90%;
+                padding: 1px 5px;
+                margin-bottom: 2px;
+            }
+            .spoiler a {
+                text-decoration: none;
+                font-color: blue;
+            }
+            .spoiler .hidetext {
+                border-top: solid 1px black;
+            }
+        </style>
+        <script type="text/javascript">
+            function show(id){
+                document.getElementById(id).style.display == 'none' ?
+                    document.getElementById(id).style.display = '' : document.getElementById(id).style.display = 'none';
+            }
+        </script>
+    </head>
 <body style='font-family: "Ubuntu Mono";'>
-<h2>Compile time Thursday, 13.02.2014, 13:50:28, NOVT; project "./project/"</h2><h1>./project/fact.c (<font style='color:green'>4</font>/8)</h1>
-<h2>Compiling:</h2>
+<h2>Compile time Thursday, 13.02.2014, 21:07:34, NOVT; project "./project/"</h2><div class='spoiler'><a onclick="show('spf0')"><h1>./project/fact.c (<font style='color:green'>3</font>/8)</h1>
+</a><div class='hidetext' id='spf0' style=''><h2>Compiling:</h2>
 <b>Exit code:</b> 0<br>
 <b>Messages:</b><br>
 t_source_fact.c:&nbsp;In&nbsp;function&nbsp;‘main’:<br>
@@ -27,31 +49,52 @@ t_source_fact.c:99:13:&nbsp;warning:&nbsp;assignment&nbsp;makes&nbsp;pointer&nbs
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^<br>
 
 <h2>Tests:</h2>
-<b>Exit code:</b> 0<br>
-<h3>Test #0</h3><b>Status:</b> <font style='color:red'>Wrong</font><br>
+<b>Exit code:</b> -11<br>
+<div class='spoiler'><a onclick="show('spf0t0')"><h3>Test #0, <font style='color:red'>Wrong</font></h3></a><div class='hidetext' id='spf0t0' style="" ><b>Status:</b> <font style='color:red'>Wrong</font><br>
 <b>Type:</b> IS_EQ_INT<br>
 <b>fact</b>(14) = 1278945280, wait: 87178291200<br>
-<h3>Test #1</h3><b>Status:</b> <font style='color:green'>Passed</font><br>
+</div></div><div class='spoiler'><a onclick="show('spf0t1')"><h3>Test #1, <font style='color:green'>Passed</font></h3></a><div class='hidetext' id='spf0t1' style="display:none" ><b>Status:</b> <font style='color:green'>Passed</font><br>
 <b>Type:</b> IS_NOT_EQ_INT<br>
 <b>fact</b>(1) = 1, wait: 0<br>
-<h3>Test #2</h3><b>Status:</b> <font style='color:green'>Passed</font><br>
+</div></div><div class='spoiler'><a onclick="show('spf0t2')"><h3>Test #2, <font style='color:green'>Passed</font></h3></a><div class='hidetext' id='spf0t2' style="display:none" ><b>Status:</b> <font style='color:green'>Passed</font><br>
 <b>Type:</b> IS_NOT_EQ_INT<br>
 <b>fact2</b>(1) = 1, wait: 0<br>
-<h3>Test #3</h3><b>Status:</b> <font style='color:green'>Passed</font><br>
+</div></div><div class='spoiler'><a onclick="show('spf0t3')"><h3>Test #3, <font style='color:green'>Passed</font></h3></a><div class='hidetext' id='spf0t3' style="display:none" ><b>Status:</b> <font style='color:green'>Passed</font><br>
 <b>Type:</b> IS_EQ_INT64<br>
 <b>fact2</b>(14) = 87178291200, wait: (int64_t) 87178291200<br>
-<h3>Test #4</h3><b>Status:</b> <font style='color:red'>Wrong</font><br>
+</div></div><div class='spoiler'><a onclick="show('spf0t4')"><h3>Test #4, <font style='color:red'>Program terminate</font></h3></a><div class='hidetext' id='spf0t4' style="" ><b>Status:</b> <font style='color:red'>Program terminate</font><br>
 <b>Type:</b> IS_EQ_STR<br>
-<b>fact2</b>((char *) "FUCK") = (null), wait: (char *) "1338"<br>
-<h3>Test #5</h3><b>Status:</b> <font style='color:green'>Passed</font><br>
+<b>fact2</b>((char *) "FUCK") = Ø, wait: (char *) "1338"<br>
+</div></div><font style='color:red'>Program terminate with exit code -11</font><br>
+<div class='spoiler'><a onclick="show('spf0t5')"><h3>Test #5, <font style='color:yellow'>Unknown</font></h3></a><div class='hidetext' id='spf0t5' style="" ><b>Status:</b> <font style='color:yellow'>Unknown</font><br>
 <b>Type:</b> IS_EQ_INT<br>
-<b>fact2</b>((int) 4) = 24, wait: 24<br>
-<h3>Test #6</h3><b>Status:</b> <font style='color:red'>Wrong</font><br>
+<b>fact2</b>((int) 4) = Ø, wait: 24<br>
+</div></div><div class='spoiler'><a onclick="show('spf0t6')"><h3>Test #6, <font style='color:yellow'>Unknown</font></h3></a><div class='hidetext' id='spf0t6' style="" ><b>Status:</b> <font style='color:yellow'>Unknown</font><br>
 <b>Type:</b> IS_EQ_INT<br>
-<b>two_arg</b>((int16_t) 123, (char *) "Lalka") = 220, wait: (int32_t) 123<br>
-<h3>Test #7</h3><b>Status:</b> <font style='color:red'>Wrong</font><br>
+<b>two_arg</b>((int16_t) 123, (char *) "Lalka") = Ø, wait: (int32_t) 123<br>
+</div></div><div class='spoiler'><a onclick="show('spf0t7')"><h3>Test #7, <font style='color:yellow'>Unknown</font></h3></a><div class='hidetext' id='spf0t7' style="" ><b>Status:</b> <font style='color:yellow'>Unknown</font><br>
 <b>Type:</b> IS_EQ_INT<br>
-<b>two_arg</b>((int16_t) 222, s) = 319, wait: 243<br>
+<b>two_arg</b>((int16_t) 222, s) = Ø, wait: 243<br>
+</div></div></div></div><div class='spoiler'><a onclick="show('spf1')"><h1>./project/str_wrest.c (<font style='color:green'>3</font>/3)</h1>
+</a><div class='hidetext' id='spf1' style='display:none'><h2>Compiling:</h2>
+<b>Exit code:</b> 0<br>
+<b>Messages:</b><br>
+t_source_str_wrest.c:&nbsp;In&nbsp;function&nbsp;‘main’:<br>
+t_source_str_wrest.c:29:3:&nbsp;warning:&nbsp;implicit&nbsp;declaration&nbsp;of&nbsp;function&nbsp;‘strcmp’&nbsp;[-Wimplicit-function-declaration]<br>
+&nbsp;&nbsp;&nbsp;if&nbsp;(0&nbsp;==&nbsp;strcmp("eH",&nbsp;tFuncOut0))<br>
+&nbsp;&nbsp;&nbsp;^<br>
 
+<h2>Tests:</h2>
+<b>Exit code:</b> 0<br>
+<div class='spoiler'><a onclick="show('spf1t0')"><h3>Test #0, <font style='color:green'>Passed</font></h3></a><div class='hidetext' id='spf1t0' style="display:none" ><b>Status:</b> <font style='color:green'>Passed</font><br>
+<b>Type:</b> IS_EQ_STR<br>
+<b>cutStr</b>((char *) "Hello", (int) 2) = eH, wait: "eH"<br>
+</div></div><div class='spoiler'><a onclick="show('spf1t1')"><h3>Test #1, <font style='color:green'>Passed</font></h3></a><div class='hidetext' id='spf1t1' style="display:none" ><b>Status:</b> <font style='color:green'>Passed</font><br>
+<b>Type:</b> IS_EQ_STR<br>
+<b>cutStr</b>("Fucking Fuck", 5) = ikcuF, wait: (char *) "ikcuF"<br>
+</div></div><div class='spoiler'><a onclick="show('spf1t2')"><h3>Test #2, <font style='color:green'>Passed</font></h3></a><div class='hidetext' id='spf1t2' style="display:none" ><b>Status:</b> <font style='color:green'>Passed</font><br>
+<b>Type:</b> IS_NOT_EQ_STR<br>
+<b>cutStr</b>("Privetik", (int) 6) = tevirP, wait: "HihiLal"<br>
+</div></div></div></div>
 </body>
 </html>

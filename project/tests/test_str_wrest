@@ -1,10 +1,24 @@
-cutStr
-    IS_EQ_S
-        "Hello",2
-        "eH"
-    IS_EQ_S
-        "Fucking Fuck",5
-        "ikcuF"
-    IS_NOT_EQ_S
-        "Privetik", 6
-        "HihiLal"
+<document>
+    <libraries></libraries>
+
+    <tests>
+        <test type="IS_EQ_STR" func="cutStr">
+            <variables></variables>
+            <inp type="char *">Hello</inp>
+            <inp type="int">2</inp>
+            <out>"eH"</out>
+        </test>
+
+        <test type='IS_EQ_STR' func='cutStr'>
+            <inp>"Fucking Fuck"</inp>
+            <inp>5</inp>
+            <out type="char *">ikcuF</out>
+        </test>
+
+        <test type='IS_NOT_EQ_STR' func='cutStr'>
+            <inp>"Privetik"</inp>
+            <inp type="int">6</inp>
+            <out>"HihiLal"</out>
+        </test>
+    </tests>
+</document>

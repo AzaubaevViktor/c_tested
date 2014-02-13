@@ -15,7 +15,7 @@ conf = {"compiler": "gcc",
         "exec_file_prefix": "t_exec_",
         "test_result_file_prefix": "t_result_"}
 
-prg_version = "0.1.2b NOT TESTED"
+prg_version = "0.1.3b NOT TESTED"
 
 
 def config(folder):
