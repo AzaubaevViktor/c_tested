@@ -90,8 +90,8 @@ def compile_test(info, conf, file):
     info.compile_message = info.compile_message.decode(encoding='utf-8', errors='strict').replace("\n", "<br>\n")
 
     info.compile_exit_code = exit_code
-
-    os.remove(file['.c'])
+    if delete_c_files:
+        os.remove(file['.c'])
 
     print(INFO + "Compiling complete with exit code %d" % exit_code)
 
@@ -110,7 +110,8 @@ def execute_test(info, file):
 
     print(INFO + "Program complete with exit exit_code %d" % exit_code)
 
-    os.remove(file['exec'])
+    if delete_c_files:
+        os.remove(file['exec'])
 
     if 1488 == exit_code:
         print(ERROR + "Program '%s' couldn't open file for write test results, terminate" % file['exec'])
@@ -141,7 +142,8 @@ def combine_results(info, file, tests):
     info.tests = tests
 
     f.close()
-    os.remove(file['result_tests'])
+    if delete_c_files:
+        os.remove(file['result_tests'])
 
 
 import glob
@@ -155,15 +157,19 @@ from lib_tested import *
 
 parser = argparse.ArgumentParser(add_help=True, description="Utility for testing C-code v%s" % prg_version )
 parser.add_argument('-f', '--folder', action='store', default='./', help="Project location for tests")
+parser.add_argument('-E', '--dont-delete-c-files', action='store_true', help="Wheter to remove test .c files")
 args = parser.parse_args()
 
 config(args.folder)
+
+delete_c_files = not args.dont_delete_c_files
 
 test_results = {}
 
 file_names = glob.glob(conf['folder'] + "*.c")
 
 for filename in file_names:
+    print(INFO + "==================================")
     print(INFO + "Testing '%s'" % filename)
     file = {'source': filename,
             'folder': conf['folder'],
@@ -191,6 +197,7 @@ for filename in file_names:
 
         print(INFO + "Complete.")
 
+print(INFO + "==================================")
 print(INFO + "Processing info into '%s'" % conf['out_file'])
 
 html = processing_info_to_html(test_results, conf)
