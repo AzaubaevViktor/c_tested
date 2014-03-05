@@ -93,7 +93,7 @@ def compile_test(info, conf, file):
     if delete_c_files:
         os.remove(file['.c'])
 
-    print(INFO + "Compiling complete with exit code %d" % exit_code)
+    print((WARNING if exit_code else INFO) + "Compiling complete with exit code %d" % exit_code)
 
     return exit_code
 
@@ -108,7 +108,7 @@ def execute_test(info, file):
 
     info.program_exit_code = exit_code
 
-    print(INFO + "Program complete with exit exit_code %d" % exit_code)
+    print((WARNING if exit_code else INFO) + "Program complete with exit exit_code %d" % exit_code)
 
     if delete_c_files:
         os.remove(file['exec'])
